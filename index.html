@@ -8,6 +8,8 @@
   <style>
 body{
 background-image : url("./moon.jpg");
+font-family: sans-serif;
+font-size: 2px;
 background-repeat: no-repeat;
 
 background-repeat : repeat;
@@ -16,36 +18,56 @@ align-items: center;
   justify-content: center;
 
 flex-direction: column;
-  border: 2px black solid;
-  margin: 0 25vw 0 25vw ;
-  margin-top: 100px;
+
+margin: 0 25vw 0 25vw ;
+margin-top: 100px;
 }
 
 #weatherCard{
-
-background : rgba(115, 147, 179,1)
+   display: flex;
+  align-items: center;
+  justify-content: center; 
+  flex-direction: column; 
+background : rgba(115, 147, 179,1);
+border: 2px black solid;
+padding-left: 20px;
+padding-right: 20px;
+min-height: 40vh;
+min-width: 20vw;
 
 }
 
 #heading{
   display : block;
+  font-size: 26px;
 /*   color : white; */
 }
 
 #cityName{
    padding-left : 6px;
+   padding-right: 2px;
   border-radius : 2px;
+  display: block;
+  border-radius: 3px;
 }
 
 button{
   margin-top: 5px;
 }
 
+#result{
+  font-size: 20px;
+
+}
+
+#range{
+  font-size: 16px;
+}
 
 </style>
 </head>
 
-<body>
+<body id="bgPic">
 <div id="weatherCard">
 <h1 id="heading"> Weather App: </h1>
 
@@ -60,7 +82,7 @@ button{
 </div>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script>
-let getWeather = () => {
+function getWeather  () {
 
             let cityName = document.querySelector("#cityName").value
 
@@ -71,12 +93,56 @@ let getWeather = () => {
                     console.log(response.data);
 
                     document.querySelector("#result").innerHTML =
-                        `<h1>${response.data.name}</h1>
+                        `<h1>${response.data.name}</h1><img src="http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png"> 
                          <h3> ${response.data.main.temp}°C </h3>
 			 <h4>Feels like :${response.data.main.feels_like}`;
 		document.querySelector("#range").innerHTML = 
 			`<h2 style="display: inline;">range:</h2><h5>${response.data.main.temp_max}°C - ${response.data.main.temp_max}°C</h5>`;
+      if (response.data.main.temp >= 1 && response.data.main.temp <= 5) {
+                        document.querySelector("#bgPic").style =
+                            `background-image: url('weather1.jpg');color:white`
+                        document.querySelector("#weathericon").innerHTML =
+                            `<i class="bi bi-snow3"></i>`
+                    }
 
+                    else if (response.data.main.temp >= 6 && response.data.main.temp <= 10) {
+                        document.querySelector("#bgPic").style =
+                            `background-image: url('weather2.jpg')`
+                        document.querySelector("#weathericon").innerHTML =
+                            `<i class="bi bi-cloud-sleet-fill"></i>`
+                    }
+
+                    else if (response.data.main.temp >= 11 && response.data.main.temp <= 15) {
+                        document.querySelector("#weathericon").innerHTML =
+                            `<i class="bi bi-cloud-lightning-rain-fill"></i>`
+                        document.querySelector("#bgPic").style =
+                            `background-image: url('weather3.jpg');color:white`
+
+                    }
+                    else if (response.data.main.temp >= 16 && response.data.main.temp <= 20) {
+                        document.querySelector("#bgPic").style =
+                            `background-image: url('weather4.jpg')`
+                        document.querySelector("#weathericon").innerHTML =
+                            `<i class="bi bi-cloud-hail-fill"></i>`
+                    }
+                    else if (response.data.main.temp >= 21 && response.data.main.temp <= 25) {
+                        document.querySelector("#bgPic").style =
+                            `background-image: url('weather5.jpg'); color:white`
+                        document.querySelector("#weathericon").innerHTML =
+                            `<i class="bi bi-cloud-haze-fill"></i>`
+                    }
+                    else if (response.data.main.temp >= 26 && response.data.main.temp <= 30) {
+                        document.querySelector("#bgPic").style =
+                            `background-image: url('weather6.jpg')`
+                        document.querySelector("#weathericon").innerHTML =
+                            `<i class="bi bi-cloud-haze-fill"></i>`
+                    }
+                    else {
+                        document.querySelector("#bgPic").style =
+                            `background-image: url('weather7.jpg')`
+                        document.querySelector("#weathericon").innerHTML =
+                            `<i class="bi bi-brightness-high-fill"></i>`
+                    }
                 })
                 .catch(function (error) {
                     // handle error
