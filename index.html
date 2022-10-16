@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Hassam Weather</title>
+  <style>
+body{
+background-image : url("./img1.jpg");
+
+background-repeat : repeat;
+display: flex;
+align-items: center;
+  justify-content: center;
+
+flex-direction: column;
+  border: 2px black solid;
+  margin: 0 25vw 0 25vw ;
+  margin-top: 100px;
+}
+
+#weatherCard{
+
+background : rgba(115, 147, 179,1)
+
+}
+
+#heading{
+  display : block;
+/*   color : white; */
+}
+
+#cityName{
+   padding-left : 6px;
+  border-radius : 2px;
+}
+
+button{
+  margin-top: 5px;
+}
+
+
+</style>
+</head>
+
+<body>
+<div id="weatherCard">
+<h1 id="heading"> Weather App: </h1>
+
+    <form onsubmit="getWeather(); return false">
+
+        <input type="text" id="cityName">
+        <button type="submit">Get Weather</button>
+
+    </form>
+    <h1 id="result"></h1>
+	<h2 id="range"></h2>
+</div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+let getWeather = () => {
+
+            let cityName = document.querySelector("#cityName").value
+
+            axios.get(`https://api.openweathermap.org/data/2.5/weather?units=metric&appid=e0f99c494c2ce394a18cc2fd3f100543&q=${cityName}`)
+                .then(function (response) {
+                    // handle success
+                    console.log("response is success");
+                    console.log(response.data);
+
+                    document.querySelector("#result").innerHTML =
+                        `<h1>${response.data.name}</h1>
+                         <h3> ${response.data.main.temp}°C </h3>
+			 <h4>Feels like :${response.data.main.feels_like}`;
+		document.querySelector("#range").innerHTML = 
+			`<h2 style="display: inline;">range:</h2><h5>${response.data.main.temp_max}°C - ${response.data.main.temp_max}°C</h5>`;
+
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+
+        }
+</script>
+
+ 
+</body>
+
+</html>
